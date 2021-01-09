@@ -10,6 +10,11 @@ import UIKit
 
 class PortfolioTableViewCell: UITableViewCell {
 
+    @IBOutlet weak var zavrsenaRabotaSlika: UIImageView!
+    
+    @IBOutlet weak var datumZavrsuvanje: UILabel!
+    
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

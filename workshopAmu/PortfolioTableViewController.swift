@@ -7,11 +7,36 @@
 //
 
 import UIKit
+import Parse
 
 class PortfolioTableViewController: UITableViewController {
 
+    var objectId: String = ""
+    var images = [PFFileObject]()
+    var dates = [String]()
+    var opisDefekt: String = ""
+    var lokacijaKorisnik: String = ""
+    var lat: Double = 0
+    var lon: Double = 0
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let query = PFQuery(className: "Rabota")
+        query.whereKey("majstorId", equalTo: objectId)
+        query.findObjectsInBackground { (objects, error) in
+            if let raboti = objects {
+                for rabota in raboti {
+                    if let imageFile = rabota["imageFile"] {
+                        if let datumPonuda = rabota["datumPonuda"]{
+                            self.images.append(imageFile as! PFFileObject)
+                            self.dates.append(datumPonuda as! String)
+                            self.tableView.reloadData()
+                        }
+                    }
+                }
+            }
+        }
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -22,25 +47,70 @@ class PortfolioTableViewController: UITableViewController {
 
     // MARK: - Table view data source
 
+    
+    @IBAction func pobarajGoMajstorot(_ sender: Any) {
+        
+        let date  = Date()
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd//mm//yyyy"
+        let dateString = dateFormatter.string(from: date)
+        let baranje = PFObject(className: "Baranje")
+        
+        baranje["korisnikId"] = PFUser.current()?.objectId
+        baranje["majstorId"] = objectId
+        baranje["opisDefekt"] = opisDefekt
+        baranje["datum"] = dateString
+        baranje["korisnikLokacija"] = lokacijaKorisnik
+        baranje["lat"] = lat
+        baranje["lon"] = lon
+        baranje["status"] = "activno"
+        
+        baranje.saveInBackground { (success, error) in
+            if let err = error {
+                print(err.localizedDescription)
+            }else{
+                print(success.description)
+                print("Napraveno Baranje")
+            }
+            
+            let rabota = PFObject(className: "Rabota")
+            rabota["lat"] = self.lat
+            rabota["lon"] = self.lon
+            rabota["baranjeId"] = baranje.objectId
+            rabota.saveInBackground()
+            print("rabotata e zacuvana")
+        }
+    }
+    
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 0
+        return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 0
+        return dates.count
     }
 
-    /*
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
-
+        let cell = tableView.dequeueReusableCell(withIdentifier: "portfolioCell", for: indexPath) as! PortfolioTableViewCell
+        if !images.isEmpty{
+            images[indexPath.row].getDataInBackground { (data, error) in
+                if let imagedata = data {
+                    if let img = UIImage(data: imagedata) {
+                        cell.zavrsenaRabotaSlika.image = img
+                    }
+                }
+            }
+            cell.datumZavrsuvanje.text = dates[indexPath.row]
+        }
+        
         // Configure the cell...
 
         return cell
     }
-    */
+    
 
     /*
     // Override to support conditional editing of the table view.

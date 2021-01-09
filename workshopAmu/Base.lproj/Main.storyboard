@@ -157,10 +157,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <mapView key="tableFooterView" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" id="ENP-Qa-rAg">
-                            <rect key="frame" x="0.0" y="72" width="320" height="44"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        </mapView>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" textLabel="Bmu-zb-qlA" detailTextLabel="ZsC-Iz-07G" style="IBUITableViewCellStyleSubtitle" id="Lp7-5u-woV">
                                 <rect key="frame" x="0.0" y="28" width="320" height="44"/>
@@ -186,7 +182,7 @@
                                     </subviews>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <segue destination="LH1-w3-X3B" kind="show" identifier="detaliBaranje" id="QMN-j7-Tg1"/>
+                                    <segue destination="LH1-w3-X3B" kind="show" identifier="detaliBaranjeMajstor" id="QMN-j7-Tg1"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -956,7 +952,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="216" id="boM-y5-xHz" customClass="PortfolioTableViewCell" customModule="workshopAmu" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="portfolioCell" rowHeight="216" id="boM-y5-xHz" customClass="PortfolioTableViewCell" customModule="workshopAmu" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="28" width="320" height="216"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="boM-y5-xHz" id="sMS-Fs-fPR">
@@ -984,6 +980,10 @@
                                         <constraint firstItem="juG-Kw-rf0" firstAttribute="leading" secondItem="sMS-Fs-fPR" secondAttribute="leading" id="Pxj-h0-9bw"/>
                                     </constraints>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="datumZavrsuvanje" destination="MgH-TP-9Zx" id="weB-as-MYG"/>
+                                    <outlet property="zavrsenaRabotaSlika" destination="juG-Kw-rf0" id="06c-CX-jV8"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -992,7 +992,11 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" id="arO-EB-OOL">
-                        <barButtonItem key="rightBarButtonItem" title="Pobaraj" id="2D4-JX-in8"/>
+                        <barButtonItem key="rightBarButtonItem" title="Pobaraj" id="2D4-JX-in8">
+                            <connections>
+                                <action selector="pobarajGoMajstorot:" destination="oyb-EH-iNW" id="J8n-RZ-hAz"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hEs-Cs-hnv" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1023,7 +1027,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="esL-wR-CFs" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="rVr-ej-71S">
-                        <rect key="frame" x="0.0" y="20" width="320" height="50"/>
+                        <rect key="frame" x="0.0" y="20" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>

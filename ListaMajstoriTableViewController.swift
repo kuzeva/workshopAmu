@@ -27,12 +27,7 @@ class ListaMajstoriTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
+        updateTabel()
     }
 
     // MARK: - Table view data source
@@ -44,18 +39,92 @@ class ListaMajstoriTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 0
+        return majstoriEmail.count
     }
 
-    /*
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "portfolio", for: indexPath)
 
-        // Configure the cell...
+        let query = PFQuery(className: "Baranje")
+        query.whereKey("majstorId", equalTo: objectIds[indexPath.row])
+        query.getFirstObjectInBackground { (object, error)in
+            if let err = error{
+                print(err.localizedDescription)
+            }else{
+                if let baranje = object {
+                    let status = baranje["status"] as! String
+                    let korisnikId = baranje["korisnikId"] as! String
+                    if korisnikId == PFUser.current()?.objectId{
+                        if status == "activno"{
+                            cell.textLabel?.textColor = UIColor.yellow
+                            cell.detailTextLabel?.textColor = UIColor.yellow
+                        }else if status == "ponuda"{
+                            cell.textLabel?.textColor = UIColor.red
+                            cell.detailTextLabel?.textColor = UIColor.red
+                        }else if status == "zakazano"{
+                            cell.textLabel?.textColor = UIColor.blue
+                            cell.detailTextLabel?.textColor = UIColor.blue
+                        }else if status == "zavrseno"{
+                            cell.textLabel?.textColor = UIColor.green
+                            cell.detailTextLabel?.textColor = UIColor.green
+                        }
+                    }else{
+                        cell.textLabel?.textColor = UIColor.black
+                        cell.detailTextLabel?.textColor = UIColor.black
+                    }
+                }
+            }
+        }
+        
+        cell.textLabel?.text = majstoriName[indexPath.row]
+        cell.detailTextLabel?.text = "lokacija"
 
         return cell
     }
-    */
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "portfolio"{
+            if let index = tableView.indexPathForSelectedRow?.row{
+                let portfolio = segue.destination as! PortfolioTableViewController
+                portfolio.objectId = objectIds[index]
+                portfolio.opisDefekt = opisDefekt
+                portfolio.lokacijaKorisnik = lokacijaKorisnik
+                portfolio.lat = lat
+                portfolio.lon = lon
+            }
+            
+        }
+    }
+    
+    func updateTabel(){
+        self.majstoriEmail.removeAll()
+        self.majstoriName.removeAll()
+        self.majstoriPhone.removeAll()
+        self.objectIds.removeAll()
+        
+        let query = PFUser.query()
+        query?.whereKey("type", equalTo: tipMajstor)
+        query?.findObjectsInBackground(block: { (users, error) in
+            if error != nil{
+                print(error?.localizedDescription ?? "")
+            }else if let users = users {
+                for object in users{
+                    if let user = object as? PFUser{
+                        if let username = user.username {
+                            if let objectId = user.objectId{
+                                self.majstoriEmail.append(username)
+                                self.majstoriPhone.append(user["phone"] as! String)
+                                self.majstoriName.append(user["name"] as! String)
+                                self.objectIds.append(objectId)
+                                self.tableView.reloadData()
+                            }
+                        }
+                    }
+                }
+            }
+        })
+        
+    }
 
     /*
     // Override to support conditional editing of the table view.
