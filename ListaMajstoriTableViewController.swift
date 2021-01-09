@@ -6,11 +6,25 @@
 //
 
 import UIKit
+import Parse
 
 class ListaMajstoriTableViewController: UITableViewController {
     
     var tipMajstor : String = ""
-
+    var opisDefekt: String = ""
+    var lokacijaKorisnik: String = ""
+    var koordinati: CLLocationCoordinate2D? = nil
+    var lon : Double = 0
+    var lat : Double = 0
+    
+    var majstoriEmail = [String]()
+    var majstoriPhone = [String]()
+    var majstoriName = [String]()
+    var korisnikId = [String]()
+    
+    var objectIds = [String]()
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -25,7 +39,7 @@ class ListaMajstoriTableViewController: UITableViewController {
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 0
+        return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
