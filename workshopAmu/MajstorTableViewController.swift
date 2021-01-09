@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Parse
 
 class MajstorTableViewController: UITableViewController {
 
@@ -21,7 +22,18 @@ class MajstorTableViewController: UITableViewController {
     }
 
     // MARK: - Table view data source
-
+    @IBAction func odjava(_ sender: Any) {
+        PFUser.logOut()
+        navigationController?.dismiss(animated: true, completion: nil)
+    }
+    
+//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+//        if segue.identifier == "detaliBaranjeMajstor"{
+//            let detaliBaranjeSegue = segue.destination as! DetaliBaranjeMajstorViewController
+//            
+//        }
+//    }
+    
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
         return 0

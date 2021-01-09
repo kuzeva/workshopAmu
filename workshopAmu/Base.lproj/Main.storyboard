@@ -192,7 +192,11 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" id="jQE-9S-hQo">
-                        <barButtonItem key="leftBarButtonItem" title="Odjava" id="HEa-Xh-Uyc"/>
+                        <barButtonItem key="leftBarButtonItem" title="Odjava" id="HEa-Xh-Uyc">
+                            <connections>
+                                <action selector="odjava:" destination="MfA-yU-dfU" id="UO0-d6-g0p"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" title="Raboti" id="UOg-Ll-8Bc">
                             <connections>
                                 <segue destination="7Rv-9c-UxW" kind="show" id="pJe-gu-O1Y"/>
@@ -905,28 +909,12 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="77" id="JWc-sp-nw8">
-                                <rect key="frame" x="0.0" y="28" width="320" height="77"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="53" id="JWc-sp-nw8">
+                                <rect key="frame" x="0.0" y="28" width="320" height="53"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="JWc-sp-nw8" id="xof-l8-cWK">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="76.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="52.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8YR-W2-Ff4">
-                                            <rect key="frame" x="16" y="11" width="42" height="21"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                            <nil key="textColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pZ8-af-MZg">
-                                            <rect key="frame" x="16" y="40" width="42" height="21"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                            <nil key="textColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                    </subviews>
                                 </tableViewCellContentView>
                                 <connections>
                                     <segue destination="oyb-EH-iNW" kind="show" identifier="portfolio" id="AKa-bJ-rhs"/>
