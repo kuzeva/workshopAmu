@@ -7,12 +7,23 @@
 //
 
 import UIKit
+import Parse
 
 class RabotiTableViewController: UITableViewController {
 
+    var rabotiKorisnikIds = [String]()
+    var rabotiDatum = [String]()
+    var rabotiStatus = [String]()
+    var objectIds = [String]()
+    var baranjeIds = [String]()
+    
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+        updateTable()
+        
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
@@ -24,23 +35,79 @@ class RabotiTableViewController: UITableViewController {
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 0
+        return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 0
+        return rabotiKorisnikIds.count
     }
 
-    /*
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "rabotaCell", for: indexPath)
 
-        // Configure the cell...
+        let query = PFUser.query()
+        query?.getObjectInBackground(withId: rabotiKorisnikIds[indexPath.row], block: { (object,error) in
+            if let err = error {
+                print(err.localizedDescription)
+            }else{
+                if let korisnik = object {
+                    cell.textLabel?.text = korisnik["name"] as? String
+                }
+            }
+        })
+        
+        cell.detailTextLabel?.text = rabotiDatum[indexPath.row]
+        
+        let status = rabotiStatus[indexPath.row]
+        if status == "zakazano"{
+            cell.backgroundColor = UIColor.red
+            cell.textLabel?.textColor = UIColor.white
+            cell.detailTextLabel?.textColor = UIColor.white
+        }else if status == "zavrsena"{
+            cell.backgroundColor = UIColor.green
+        }
+        
 
         return cell
     }
-    */
+ 
+    func updateTable(){
+        self.rabotiKorisnikIds.removeAll()
+        self.rabotiDatum.removeAll()
+        self.rabotiStatus.removeAll()
+        self.objectIds.removeAll()
+        
+        let query = PFQuery(className: "Rabota")
+        query.whereKey("majstorId", equalTo: PFUser.current()?.objectId ?? "")
+        query.findObjectsInBackground { (objects, error) in
+            if let err = error {
+                print(err.localizedDescription)
+            }else {
+                if let raboti = objects {
+                    for rabota in raboti {
+                        self.rabotiKorisnikIds.append(rabota["korisnikId"] as! String)
+                        self.rabotiDatum.append(rabota["datumPonuda"] as! String)
+                        self.rabotiStatus.append(rabota["status"] as! String)
+                        self.baranjeIds.append(rabota["baranjeId"] as! String)
+                        self.objectIds.append(rabota.objectId!)
+                        self.tableView.reloadData()
+                    }
+                }
+            }
+        }
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "rabotaDetali"{
+            if let index = tableView.indexPathForSelectedRow?.row {
+                let rabota = segue.destination as! RabotaDetaliViewController
+                rabota.rabotaId = objectIds[index]
+                rabota.baranjeId = baranjeIds[index]
+            }
+        }
+    }
 
     /*
     // Override to support conditional editing of the table view.
